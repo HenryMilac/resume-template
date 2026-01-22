@@ -1,16 +1,63 @@
-# React + Vite
+# CV Template
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, customizable CV template that generates a professional PDF resume from JSON data.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
+- Node.js (v14 or higher)
+- npm
 
-## React Compiler
+### Installation
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+1. Clone or download this repository
+```bash
+git clone https://github.com/HenryMilac/resume-template
+cd resume-template
+```
 
-## Expanding the ESLint configuration
+2. Install dependencies
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Run the development server
+```bash
+npm run dev
+```
+
+## 📝 How to Use
+
+1. **Edit your CV data**
+   - Navigate to `src/data/resumen.json`
+   - Fill in your personal information, work experience, education, and skills
+   - Save the file
+
+2. **Preview your CV**
+   - The application will automatically reload with your changes
+   - Review your CV in the browser
+
+3. **Download your PDF**
+   - Click the download button
+   - Your personalized CV will be generated and downloaded as a PDF
+
+## 📦 Technologies Used
+
+- **React 19** - UI framework
+- **Vite** - Build tool and development server
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **jsPDF** - PDF generation library
+- **html2canvas** - HTML to canvas conversion for PDF rendering
+- **ESLint** - Code quality and linting
+
+## 📞 Support
+
+If you encounter any issues, please open an issue in the [GitHub repository](https://github.com/HenryMilac/resume-template/issues).
+
+## 📄 License
+
+MIT License - Feel free to use this template for your personal CV.
+
+---
+
+Made with ❤️ by [Henry Ramirez](https://github.com/HenryMilac)
