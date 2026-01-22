@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 
@@ -11,19 +12,27 @@ const PDF_CONFIG = {
 }
 
 const BUTTON_ID = 'download-button'
+const SUCCESS_DISPLAY_TIME = 2000 // ms
+
+// Estados del botón
+const BUTTON_STATES = {
+  IDLE: 'idle',
+  LOADING: 'loading',
+  SUCCESS: 'success',
+}
 
 export default function ButtonDownload({ resumeRef, fileName = 'Resume' }) {
+  const [buttonState, setButtonState] = useState(BUTTON_STATES.IDLE)
+
   const handleDownloadPDF = async () => {
     const element = resumeRef.current
-    const button = document.getElementById(BUTTON_ID)
 
-    if (!element) {
-      console.error('Resume element not found')
+    if (!element || buttonState !== BUTTON_STATES.IDLE) {
       return
     }
 
     try {
-      hideButton(button)
+      setButtonState(BUTTON_STATES.LOADING)
       await waitForDOMUpdate()
 
       const canvas = await captureElementAsCanvas(element)
@@ -35,11 +44,33 @@ export default function ButtonDownload({ resumeRef, fileName = 'Resume' }) {
 
       pdf.save(`${fileName}.pdf`)
       console.log('PDF generado exitosamente')
+
+      setButtonState(BUTTON_STATES.SUCCESS)
+
+      // Volver al estado inicial después de mostrar el check
+      setTimeout(() => {
+        setButtonState(BUTTON_STATES.IDLE)
+      }, SUCCESS_DISPLAY_TIME)
     } catch (error) {
       console.error('Error al generar el PDF:', error)
       alert('Hubo un error al generar el PDF. Por favor intenta de nuevo.')
-    } finally {
-      showButton(button)
+      setButtonState(BUTTON_STATES.IDLE)
+    }
+  }
+
+  const getButtonContent = () => {
+    switch (buttonState) {
+      case BUTTON_STATES.LOADING:
+        return <SpinnerIcon />
+      case BUTTON_STATES.SUCCESS:
+        return <CheckIcon />
+      default:
+        return (
+          <>
+            <DownloadIcon />
+            Descargar PDF
+          </>
+        )
     }
   }
 
@@ -47,23 +78,15 @@ export default function ButtonDownload({ resumeRef, fileName = 'Resume' }) {
     <button
       id={BUTTON_ID}
       onClick={handleDownloadPDF}
-      className="fixed bottom-8 right-8 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+      disabled={buttonState !== BUTTON_STATES.IDLE}
+      className="fixed bottom-8 right-8 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 min-w-[200px] disabled:opacity-80 disabled:cursor-not-allowed disabled:hover:scale-100 cursor-pointer"
     >
-      <DownloadIcon />
-      Descargar PDF
+      {getButtonContent()}
     </button>
   )
 }
 
 // Funciones auxiliares
-const hideButton = (button) => {
-  if (button) button.style.visibility = 'hidden'
-}
-
-const showButton = (button) => {
-  if (button) button.style.visibility = 'visible'
-}
-
 const waitForDOMUpdate = () =>
   new Promise(resolve => setTimeout(resolve, PDF_CONFIG.DOM_UPDATE_DELAY))
 
@@ -112,7 +135,7 @@ const addMultiplePages = (pdf, imgData, imgHeight, imgWidth, pageHeight) => {
   }
 }
 
-// Componente de ícono SVG
+// Componentes de íconos SVG
 const DownloadIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -126,6 +149,46 @@ const DownloadIcon = () => (
       strokeLinejoin="round"
       strokeWidth={2}
       d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+    />
+  </svg>
+)
+
+const SpinnerIcon = () => (
+  <svg
+    className="h-5 w-5 animate-spin"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    />
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 13l4 4L19 7"
     />
   </svg>
 )
