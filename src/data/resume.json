@@ -1,0 +1,36 @@
+{
+  "fullName": "Full Name",
+  "targetPosition": "React Front-End Developer",
+  "phone": "+51 111111111",
+  "email": "email@gmail.com",
+  "linkedin": "linkedin.com/in/user",
+  "summary": "Summary about yourself.",
+  "workExperience": [
+    {
+      "company": "Company",
+      "duration": "Marzo 2024 – Presente",
+      "position": "Full-Stack Developer",
+      "highlights": [
+        "explain..",
+        "explain.."
+      ]
+    },
+    {
+      "company": "Company",
+      "duration": "Marzo 2024 – Presente",
+      "position": "Full-Stack Developer",
+      "highlights": [
+        "explain..",
+        "explain.."
+      ]
+    }
+  ],
+  "education": {
+    "institution": "University",
+    "degree": "Degree"
+  },
+  "skills": {
+    "frameworks": "React, React Native, Laravel, NextJS, NestJS",
+    "languages": "Español (Nativo), Inglés (A2)"
+  }
+}
